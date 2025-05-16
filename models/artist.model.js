@@ -14,9 +14,7 @@ const artistSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    wiki_url: String,
-    profile_url: String,
-    movies: [{
+     movies: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Movie'
     }]
