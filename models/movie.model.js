@@ -4,8 +4,6 @@ const artistSchema = new mongoose.Schema({
     artistid: Number,
     first_name: String,
     last_name: String,
-    wiki_url: String,
-    profile_url: String,
     movies: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Movie'
@@ -36,7 +34,6 @@ const movieSchema = new mongoose.Schema({
     },
     published: Boolean,
     released: Boolean,
-    poster_url: String,
     release_date: Date,
     publish_date: Date,
     artists: [artistSchema],
@@ -44,7 +41,6 @@ const movieSchema = new mongoose.Schema({
     duration: Number,
     critic_rating: Number,
     trailer_url: String,
-    wiki_url: String,
     story_line: String,
     shows: [showSchema]
 });
