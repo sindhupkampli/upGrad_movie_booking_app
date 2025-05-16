@@ -5,7 +5,6 @@ const TokenGenerator = require('uuid-token-generator');
 
 exports.signUp = async (req, res) => {
     try {
-        console.log('>>>>>>>>>>>.--- ',req.body)
         const { email_address, first_name, last_name, mobile_number, password } = req.body;
         const encryptPassword = b2a.btoa(password)
         
@@ -13,41 +12,28 @@ exports.signUp = async (req, res) => {
             email:email_address,
             first_name:first_name,
             last_name:last_name,
-            username:first_name+last_name,
+            username:first_name + last_name,
             contact:mobile_number,
             password:encryptPassword,
             role:"user",
             isLoggedIn: false,
             uuid: '',
             accesstoken: '',
-            coupens: [],
+            coupons: [],
             bookingRequests: []
         });
         const savedUser = await newUser.save();
-        // if (user) {
-        //     user.isLoggedIn = false;
-        //     user.uuid = '';
-        //     user.accesstoken = '';
-
-        //     await user.save();
-        //     res.status(200).json({ message: 'Logout successful' });
-        // } else {
-        //     res.status(404).json({ message: 'User not found' });
-        // }
-        res.status(201).json({ message: 'User created successfully', user: savedUser });
+      
+        res.status(201).json({ message: 'User Created Successfully', user: savedUser });
     } catch (error) {
         console.error('Error creating user:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Server Encountered an Internal Error' });
     }
 };
 
 exports.login = async (req, res) => {
     try {
         const reqHeader = req.headers['Authorization'];
-        if (!authHeader || !authHeader.startsWith('Basic ')) {
-            return res.status(401).send('Authorization header missing or not Basic');
-        }
-        
         const base64Credentials = authHeader.split(' ')[1];
         const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
         const [username, password] = credentials.split(':');
@@ -64,7 +50,7 @@ exports.login = async (req, res) => {
                 const currentUser = await user.save();
                 res.status(200).json({ message: 'Login successful', currentUser });
             }else {
-                res.status(404).json({ message: 'Invalid username or password' });
+                res.status(404).json({ message: 'Invalid Username or Password' });
             }
            
         } else {
@@ -72,7 +58,7 @@ exports.login = async (req, res) => {
         }
     } catch (error) {
         console.error('Error logging in:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Server Encountered an Internal Error' });
     }
 };
 
@@ -86,14 +72,14 @@ exports.logout = async (req, res) => {
             user.uuid = '';
             user.accesstoken = '';
             await user.save();
-            res.status(200).json({ message: 'Logout successful' });
+            res.status(200).json({ message: 'Logged out' });
         } else {
 
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ message: 'Not Found' });
         }
     } catch (error) {
         console.error('Error logging out:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Server Encountered an Internal Error' });
     }
 };
 
@@ -103,7 +89,7 @@ exports.getCouponCode = async (req, res) => {
         res.status(200).json({ couponCode });
     } catch (error) {
         console.error('Error generating coupon code:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Server Encountered an Internal Error' });
     }
 };
 
@@ -113,6 +99,6 @@ exports.bookShow = async (req, res) => {
         res.status(200).json({ message: 'Show booked successfully' });
     } catch (error) {
         console.error('Error booking show:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Server Encountered an Internal Error' });
     }
 };
